@@ -32,7 +32,18 @@ public class TemplateService {
     @Autowired
     ResourceLoader resourceLoader;
 
-    public void generateOdtFile(String templateFile, String outputFilePath, Map<String, Object> data, FieldsMetadata metadata) throws IOException, XDocReportException {
+
+    /**
+     * Generate file and save it to provided output file path as a pdf document.
+     *
+     * @param templateFile   the template file
+     * @param outputFilePath the output file path
+     * @param data           the data
+     * @param metadata       the metadata
+     * @throws IOException         the io exception
+     * @throws XDocReportException the x doc report exception
+     */
+    public void generateFile(String templateFile, String outputFilePath, Map<String, Object> data, FieldsMetadata metadata) throws IOException, XDocReportException {
         Resource resource = resourceLoader.getResource(templateFile);
         if(!resource.exists()){
             logger.error("Template file does not exist :"+templateFile);
@@ -61,8 +72,6 @@ public class TemplateService {
             Options options = Options.getTo(ConverterTypeTo.PDF);
             options.subOptions(pdfOptions);
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-//          XWPFDocument document = new XWPFDocument(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
-//          PdfConverter.getInstance().convert(document,outputStream,pdfOptions);
             report.convert(context, options.subOptions(pdfOptions), outputStream);
 
             //save pdf file
