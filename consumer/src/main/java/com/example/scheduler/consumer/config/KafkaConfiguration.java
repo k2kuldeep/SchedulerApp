@@ -46,7 +46,7 @@ public class KafkaConfiguration {
 
     @KafkaListener(topics = "scheduler" ,groupId = "group-1")
     public void listener(ConsumerRecord<String,String> record){
-        if(record.key().equalsIgnoreCase(RequestFor.CARD_STATEMENT)){
+        if(record.key()!= null && record.key().equalsIgnoreCase(RequestFor.CARD_STATEMENT)){
             List<UserStatement> userStatements = new ArrayList<>();
             try {
                 userStatements = objectMapper.reader().forType(new TypeReference<List<UserStatement>>(){}).readValue(record.value());
